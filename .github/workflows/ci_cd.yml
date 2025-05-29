@@ -6,7 +6,7 @@ on:
   push:              # Run this workflow on every push to the repo
   pull_request:      # Run this workflow when a PR is opened or updated
   schedule:          # Also run this workflow on a schedule
-    - cron: '*/20 * * * *'  # Run every 20 minutes (UTC) using cron syntax
+    - cron: '0 0 1 * *'  # Run at 00:00 (UTC)  on the 1st of every month using cron syntax
   workflow_dispatch: # Enables manual trigger via Github UI
 
 jobs:
