@@ -8,7 +8,6 @@ This repository demonstrates a **minimal CI/CD pipeline for a data science proje
 - ✅ Scheduled pipeline execution every 20 minutes
 - ✅ Manual workflow trigger support
 - ✅ Versioned artifact uploads (model + logs)
-- ✅ Auto-cleanup of artifacts after 3 days
 
 ---
 
