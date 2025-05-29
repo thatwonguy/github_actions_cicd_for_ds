@@ -1,23 +1,43 @@
+# Name of the workflow as it appears in the GitHub Actions UI
 name: Data Science CI Pipeline
 
-on: [push, pull_request]
+# Define when the workflow should run
+on:
+  push:              # Run this workflow on every push to the repo
+  pull_request:      # Run this workflow when a PR is opened or updated
+  schedule:          # Also run this workflow on a schedule
+    - cron: '*/20 * * * *'  # Run every 20 minutes (UTC) using cron syntax
 
 jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
-    steps:
+  build-and-test:              # Job name (can be anything)
+    runs-on: ubuntu-latest     # Use the latest available Ubuntu runner from GitHub
+
+    steps:                     # Define the individual steps in this job
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3  # Step 1: Check out the repo code into the runner
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v5  # Step 2: Install and configure Python
         with:
-          python-version: '3.10'
+          python-version: '3.10'       # Specify the Python version to use
 
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+        run: |                         # Step 3: Install Python dependencies from requirements.txt
+          python -m pip install --upgrade pip  
+          pip install -r requirements.txt      
 
-      - name: Run tests with PYTHONPATH
-        run: PYTHONPATH=. pytest tests/
+      - name: Create output directory
+        run: mkdir -p outputs          # Step 4: Create a directory to store model and test logs
+
+      - name: Run tests and log output
+        run: |                         # Step 5: Run the test suite using pytest and capture logs, Set PYTHONPATH and redirect output to a log file
+          PYTHONPATH=. pytest tests/ > outputs/test_log.txt  
+        continue-on-error: true        # Allow the job to continue even if tests fail, so logs can still be uploaded
+
+      - name: Upload model and test logs as artifacts
+        uses: actions/upload-artifact@v4  # Step 6: Upload output files as downloadable artifacts
+        with:
+          name: model-and-logs            # Artifact group name
+          path: |                         # Files or folders to upload
+            outputs/model.pkl             # Trained model file
+            outputs/test_log.txt          # Log file from test execution
