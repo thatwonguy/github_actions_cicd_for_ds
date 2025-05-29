@@ -1,6 +1,6 @@
 [![Data Science CI Pipeline](https://github.com/thatwonguy/github_actions_cicd_for_ds/actions/workflows/ci_cd.yml/badge.svg)](https://github.com/thatwonguy/github_actions_cicd_for_ds/actions/workflows/ci_cd.yml)
 
-# ⚙️ Data Science CI/CD Pipeline — Proof of Concept
+# ⚙️ Data Science CI/CD Pipeline w/ Github Actions — POC
 
 This repository demonstrates a **minimal CI/CD pipeline for a data science project** using **GitHub Actions**, with features including:
 
