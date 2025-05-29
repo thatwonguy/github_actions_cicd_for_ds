@@ -7,6 +7,7 @@ on:
   pull_request:      # Run this workflow when a PR is opened or updated
   schedule:          # Also run this workflow on a schedule
     - cron: '*/20 * * * *'  # Run every 20 minutes (UTC) using cron syntax
+  workflow_dispatch: # Enables manual trigger via Github UI
 
 jobs:
   build-and-test:              # Job name (can be anything)
@@ -29,6 +30,9 @@ jobs:
       - name: Create output directory
         run: mkdir -p outputs          # Step 4: Create a directory to store model and test logs
 
+      - name: Log current UTC time
+        run: date -u                   # Print the time the job started in UTC
+
       - name: Run tests and log output
         run: |                         # Step 5: Run the test suite using pytest and capture logs, Set PYTHONPATH and redirect output to a log file
           PYTHONPATH=. pytest tests/ > outputs/test_log.txt  
@@ -37,10 +41,13 @@ jobs:
       - name: List contents of outputs folder
         run: ls -R outputs || echo "outputs folder is empty"
 
+      - name: Generate artifact version tag
+        run: echo "ARTIFACT_TAG=model-and-logs-$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
+
       - name: Upload model and test logs as artifacts
-        uses: actions/upload-artifact@v4  # Step 6: Upload output files as downloadable artifacts
+        uses: actions/upload-artifact@v4
         with:
-          name: model-and-logs            # Artifact group name
-          path: |                         # Files or folders to upload, points to trained model file and log file 
-            outputs/model.pkl             
-            outputs/test_log.txt          
+          name: ${{ env.ARTIFACT_TAG }}
+          path: |
+            outputs/model.pkl
+            outputs/test_log.txt
