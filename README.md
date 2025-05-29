@@ -1,3 +1,4 @@
+[![Data Science CI Pipeline](https://github.com/thatwonguy/github_actions_cicd_for_ds/actions/workflows/ci_cd.yml/badge.svg)](https://github.com/thatwonguy/github_actions_cicd_for_ds/actions/workflows/ci_cd.yml)
 ## CI/CD Proof of Concept for Data Science using github_actions
 Minimal GitHub directory structure and content that demonstrates a CI/CD pipeline for a Data Science team using GitHub Actions, covering basic testing, validation, and automation.
 
